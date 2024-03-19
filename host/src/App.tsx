@@ -12,8 +12,8 @@ const AppRemote = React.lazy(() => import("remote1/App"));
 const App = (props: Props) => {
   console.log(props);
   console.log("From App.tsx");
-  console.log(process.env.APP_SECRET);
-  const token = "ey123";
+    console.log(process.env.APP_SECRET);
+    const token = "ey123";
   return (
     <>
       <div className="app">App!!</div>
