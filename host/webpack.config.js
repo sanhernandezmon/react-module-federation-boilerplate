@@ -3,7 +3,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const plugins = function () {
   return [
@@ -125,7 +125,6 @@ const prod_config = {
     }),
     ...plugins(),
     new CleanWebpackPlugin(),
-
   ],
 };
 

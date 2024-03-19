@@ -4,7 +4,7 @@ const { ModuleFederationPlugin } = require("webpack").container;
 const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
 const path = require("path");
 const LiveReloadPlugin = require("webpack-livereload-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 //const appBaseUrl = "http://localhost:8080/assets";
 module.exports = {
@@ -99,6 +99,5 @@ module.exports = {
     }),
     new LiveReloadPlugin(),
     new CleanWebpackPlugin(),
-
   ],
 };

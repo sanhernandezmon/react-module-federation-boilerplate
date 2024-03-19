@@ -7,7 +7,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 //const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const { ModuleFederationPlugin } = require("webpack").container;
 //const appBaseUrl = "http://localhost:8080";
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 
 const getPackageJson = function (...args) {
   const packageJSON = JSON.parse(fs.readFileSync(join(__dirname, "./package.json")));
@@ -26,7 +26,6 @@ const {
   description,
   license,
   author,
-  repository,
   homepage,
 } = getPackageJson("name", "version", "description", "license", "author", "repository", "homepage");
 
@@ -35,7 +34,6 @@ const banner = ` Name: ${pkgName}
  Description: ${description}
  Author: ${author}
  Homepage: ${homepage}
-
  Copyright (c) ${author.replace(/ *<[^)]*> */g, " ")} and project contributors.
 
  This source code is licensed under the ${license} license found in the LICENSE file in the root directory of this source tree.`;
@@ -104,8 +102,7 @@ const common = {
         //libs: 'libs@[libsUrl]/remoteEntry.js',
       },
     }),
-    new Dotenv()
-
+    new Dotenv(),
   ],
   optimization: {
     minimize: true,
