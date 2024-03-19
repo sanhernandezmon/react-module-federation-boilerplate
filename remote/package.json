@@ -29,7 +29,7 @@
     "eslint": "eslint . --ext .js,.cjs,.ts,.jsx,.tsx, --quiet --fix --ignore-path ./.gitignore",
     "prettier": "prettier --config .prettierrc --write 'src/**/*.{js,jsx,ts,tsx,css,html,json}' ",
     "stylelint": "stylelint src/**/*.{css,less,scss,sass} --fix",
-    "prepare": "git init && husky install",
+    "prepare": "husky install",
     "type-check": "tsc",
     "start:hr": "webpack serve --mode production --config webpack-live.config.js --port 9002"
   },
