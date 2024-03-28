@@ -10,26 +10,16 @@ const Dotenv = require('dotenv-webpack');
 //const appBaseUrl = "http://localhost:8080/assets";
 module.exports = {
   cache: false,
-  entry: "./src/bootstrap.tsx",
+  entry: "./src/index",
   mode: "development",
-  devtool: "source-map",
-  optimization: {
-    minimize: false,
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", "jsx", ".json", ".css"],
   },
   devServer: {
-    hot: false,
-    static: path.join(__dirname, "dist"),
-    historyApiFallback: {
-      index: "index.html",
+    static: {
+      directory: path.join(__dirname, 'dist'),
     },
+    port: 3001,
   },
   output: {
     publicPath: "auto",
@@ -90,18 +80,15 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "host",
       remotes: {
-        remote1: "remote1@http://localhost:9002/remoteEntry.js",
+        remote1: "remote1@http://localhost:3002/remoteEntry.js",
         //libs: 'libs@[libsUrl]/remoteEntry.js',
       },
+      shared: ['react', 'react-dom'],
     }),
-    new ExternalTemplateRemotesPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    new LiveReloadPlugin(),
-    new CleanWebpackPlugin(),
     new Dotenv()
-
 
   ],
 };
