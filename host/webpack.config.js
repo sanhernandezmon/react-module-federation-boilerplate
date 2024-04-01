@@ -1,29 +1,33 @@
-/* eslint @typescript-eslint/no-var-requires: 0 */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
-const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
 const path = require("path");
-const LiveReloadPlugin = require("webpack-livereload-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
+const { DateSeparatorPlugin } = require("./webpack-plugins");
+const { isLocalBuild, remoteEntryUrl } = require("./webpack-env");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const {resolve} = require("path");
 
-//const appBaseUrl = "http://localhost:8080/assets";
 module.exports = {
   cache: false,
   entry: "./src/index",
   mode: "development",
+  devtool: isLocalBuild ? "source-map" : false,
+  optimization: {
+    minimize: !isLocalBuild,
+  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", "jsx", ".json", ".css"],
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, "dist"),
     },
     port: 3001,
   },
   output: {
     publicPath: "auto",
     clean: true,
+    path: resolve(__dirname, "dist"),
   },
   module: {
     rules: [
@@ -80,15 +84,17 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "host",
       remotes: {
-        remote1: "remote1@http://localhost:3002/remoteEntry.js",
+        remote: `remote@${remoteEntryUrl}`,
         //libs: 'libs@[libsUrl]/remoteEntry.js',
       },
-      shared: ['react', 'react-dom'],
+      shared: ["react", "react-dom"],
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    new Dotenv()
+    new Dotenv(),
+    DateSeparatorPlugin,
+    new CleanWebpackPlugin(),
 
   ],
 };

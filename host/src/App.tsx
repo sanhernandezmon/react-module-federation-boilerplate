@@ -2,10 +2,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import Hello from "./components/Hello";
 import World from "./components/World";
 import "./App.css";
-import logo from "./assets/logo.png";
 import HostImg from "./assets/host.jpg";
 
-const RemoteLayout = React.lazy(() => import("remote1/RemoteLayout"));
+const RemoteLayout = React.lazy(() => import("remote/RemoteLayout"));
 
 export const Timer = ({ waitingFor = "unknown" }) => {
   const [time, setTime] = useState(0);
@@ -25,17 +24,21 @@ export const Timer = ({ waitingFor = "unknown" }) => {
 };
 
 const App = () => {
+  const [count, setCount] = useState(0);
   useEffect(() => {
-    console.log("From App.tsx : APP_ENV", process.env.APP_ENV);
+    console.log("From App.tsx : APP_BUILD_MODE", process.env.APP_BUILD_MODE);
   }, []);
 
   return (
     <>
-      <div className="app">App 1</div>
+      <div className="app">Host</div>
       <img src={HostImg} width="100px" height="100px" alt="logo" />
       <Hello name={"as"} />
       <World />
-      =================================================== Begin Remote
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>count {count}</button>
+      </div>
+      ============================================= Begin Remote  ===============================================
       <Suspense fallback={<Timer waitingFor={"remote"} />}>
         <RemoteLayout token={"ej12345"} />
       </Suspense>

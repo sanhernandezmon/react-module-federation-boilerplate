@@ -1,40 +1,35 @@
-const path = require("path");
+/* eslint @typescript-eslint/no-var-requires: 0 */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
-const { ModuleFederationPlugin } = require('webpack').container;
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { ModuleFederationPlugin } = require("webpack").container;
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
+const { DateSeparatorPlugin } = require("./webpack-plugins");
+const { isLocalBuild } = require("./webpack-env");
+const {resolve} = require("path");
 
-const plugins = function () {
-  return [
-    new CopyPlugin({
-      patterns: [
-        {
-          from: "public/",
-          to: "./",
-          globOptions: {
-            dot: true,
-            gitignore: true,
-            ignore: ["**/index.html"],
-          },
-        },
-        {
-          from: "assets",
-          to: "assets",
-        },
-      ],
-    }),
-  ];
-};
-
-const common_config = {
-  entry: "./src/index.tsx",
-  devtool: "source-map",
-  devServer: {
-    static: "./dist",
+module.exports = {
+  cache: false,
+  entry: "./src/index",
+  mode: "development",
+  devtool: isLocalBuild ? "source-map" : false,
+  optimization: {
+    minimize: !isLocalBuild,
+    runtimeChunk: isLocalBuild ? "single" : false,
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    extensions: [".ts", ".tsx", ".js", "jsx", ".json", ".css"],
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    port: 3002,
+  },
+  output: {
+    publicPath: "auto",
+    clean: true,
+    path: resolve(__dirname, "dist"),
   },
   module: {
     rules: [
@@ -58,63 +53,47 @@ const common_config = {
         ],
       },
       {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        options: {
+          presets: ["@babel/preset-react"],
+        },
+      },
+      {
+        // Include ts, tsx, js, and jsx files.
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: [{ loader: "babel-loader" }],
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "assets",
+            },
+          },
+        ],
+      },
     ],
   },
-};
-
-const dev_config = {
-  ...common_config,
-  mode: "development",
-  devtool: "inline-source-map",
   plugins: [
-    new HtmlWebpackPlugin({
-      inject: true,
-      title: "Webpack React Typescript Library Template",
-      template: "public/index.html",
-    }),
-    ...plugins(),
-  ],
-};
-
-const prod_config = {
-  ...common_config,
-  mode: "production",
-  output: {
-    publicPath: "./",
-    path: path.join(__dirname, "/dist"),
-    clean: true,
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      chunks: ['main'],
-    }),
     new ModuleFederationPlugin({
-      name: 'remote1',
-      filename: 'remoteEntry.js',
+      name: "remote",
+      filename: "remoteEntry.js",
       exposes: {
-        './App': './src/App.tsx',
+        "./RemoteLayout": "./src/RemoteLayout",
       },
-/*      remotes: {
-        libs: 'libs@[libsUrl]/remoteEntry.js',
-      },*/
+      shared: ["react", "react-dom"],
     }),
-    //...plugins(),
-    new ExternalTemplateRemotesPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+    }),
+    new Dotenv(),
+    DateSeparatorPlugin,
     new CleanWebpackPlugin(),
   ],
-};
-
-module.exports = (env, argv) => {
-  if (argv.mode === "development") {
-    return dev_config;
-  }
-
-  if (argv.mode === "production") {
-    return prod_config;
-  }
 };

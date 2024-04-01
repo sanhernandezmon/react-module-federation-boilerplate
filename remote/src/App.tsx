@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import RemoteLayout from "./RemoteLayout"; // Tell webpack this JS file uses this image
+import RemoteLayout from "./RemoteLayout";
 
 const App = () => {
   return (
