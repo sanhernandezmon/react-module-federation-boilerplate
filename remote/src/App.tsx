@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import RemoteLayout from "./RemoteLayout";
+import RemoteLayout from "./remote/RemoteLayout";
 
 const App = () => {
   return (

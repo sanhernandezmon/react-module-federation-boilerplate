@@ -85,7 +85,7 @@ module.exports = {
       name: "remote",
       filename: "remoteEntry.js",
       exposes: {
-        "./RemoteLayout": "./src/RemoteLayout",
+        "./RemoteLayout": "./src/remote/RemoteLayout",
       },
       shared: ["react", "react-dom"],
     }),

@@ -73,7 +73,7 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[name].[ext]",
-              outputPath: "assets", // Indica la carpeta de destino en dist
+              outputPath: "assets",
             },
           },
         ],
