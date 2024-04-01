@@ -1,1 +1,1 @@
-# boilerplate-react-vite-mfe
+# react-module-federation-remote
