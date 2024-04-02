@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Hello from "../components/Hello";
-import World from "../components/World";
+import React, { useEffect } from "react";
 import "./RemoteLayout.css";
-import RemoteImg from "../assets/remote.webp";
 import { useAuthStore } from "../auth/stores/AuthStore";
-import { MyProfile } from "./components/MyProfile";
+import { BrowserRouter, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import NoMatchPage from "./pages/NoMatchPage";
+import HomePage from "./pages/HomePage";
 
 type Props = {
   token: string;
 };
 
+const MyProfile = React.lazy(() => import("./components/MyProfile"));
+const HelloWorldPage = React.lazy(() => import("./pages/HelloWorldPage"));
+
 const RemoteLayout = (props: Props) => {
   const setMe = useAuthStore((state) => state.setMe);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const [count, setCount] = useState(0);
   useEffect(() => {
     console.log("From remote", props);
     setMe({
@@ -23,17 +26,35 @@ const RemoteLayout = (props: Props) => {
     });
     setAccessToken(props.token);
   }, []);
+
   return (
     <>
       <div className="remote-app">
-        <div className="remote-app">Remote token: {props.token}</div>
-        <img src={RemoteImg} width="100px" height="100px" alt="logo" />
-        <Hello />
-        <World />
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>count {count}</button>
-        </div>
-        <MyProfile />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate to="/remote" replace={true} />} />
+            <Route path="remote" element={<DashboardPage />}>
+              <Route index element={<HomePage token={props.token} />} />
+              <Route
+                path="hello-world/*"
+                element={
+                  <React.Suspense fallback={<>...</>}>
+                    <HelloWorldPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path="my-profile"
+                element={
+                  <React.Suspense fallback={<>...</>}>
+                    <MyProfile />
+                  </React.Suspense>
+                }
+              />
+              <Route path="*" element={<NoMatchPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </div>
     </>
   );

@@ -2,22 +2,6 @@
   "name": "react-module-federation-remote",
   "version": "0.0.0",
   "description": "React typescript component creator boilerplate using webpack, react and typescript",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.esm.js",
-  "unpkg": "dist/index.min.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Kothing/webpack-typescript-react-library-template"
-  },
-  "homepage": "https://github.com/Kothing/webpack-typescript-react-library-template#readme",
-  "bugs": {
-    "url": "https://github.com/Kothing/webpack-typescript-react-library-template/issues"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "scripts": {
     "start": "webpack-cli serve",
     "build": "webpack --mode production",
@@ -84,6 +68,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
     "zustand": "^4.5.2"
   },
   "peerDependencies": {

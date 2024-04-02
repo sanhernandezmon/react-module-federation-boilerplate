@@ -5,7 +5,7 @@ type Props = {
 };
 
 const Hello = (props: Props) => {
-  return <div>From remote</div>;
+  return <div>Hello</div>;
 };
 
 export default Hello;

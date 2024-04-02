@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthStore } from "../../auth/stores/AuthStore";
 import React from "react";
 
-export const MyProfile = () => {
+const MyProfile = () => {
   const me = useAuthStore((state) => state.me);
   const accessToken = useAuthStore((state) => state.accessToken);
 
@@ -19,3 +19,5 @@ export const MyProfile = () => {
     </>
   );
 };
+
+export default MyProfile;
