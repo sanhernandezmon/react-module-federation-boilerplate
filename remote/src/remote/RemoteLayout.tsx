@@ -6,7 +6,8 @@ import { Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import NoMatchPage from "./pages/NoMatchPage";
 import HomePage from "./pages/HomePage";
-
+import FormComponent from "./user/pages/UserForm";
+import UserList from "./user/pages/UserList";
 type Props = {
   token: string;
 };
@@ -51,6 +52,18 @@ const RemoteLayout = (props: Props) => {
                   </React.Suspense>
                 }
               />
+              <Route path="user" element={
+                  <React.Suspense fallback={<>...</>}>
+                    <FormComponent />
+                  </React.Suspense>
+              }/>
+
+              <Route path="users" element={
+                  <React.Suspense fallback={<>...</>}>
+                    <UserList />
+                  </React.Suspense>
+              }/>
+              
               <Route path="*" element={<NoMatchPage />} />
             </Route>
           </Routes>

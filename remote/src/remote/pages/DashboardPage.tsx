@@ -15,6 +15,12 @@ const DashboardPage = () => (
           <Link to="hello-world/messages">Hello World</Link>
         </li>
         <li>
+          <Link to="user">Register user</Link>
+        </li>
+        <li>
+          <Link to="users">User List</Link>
+        </li>
+        <li>
           <Link to="no-match">No Match</Link>
         </li>
       </ul>
